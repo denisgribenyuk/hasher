@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package hash_service;
+
+option go_package = "./hash_client;hash_client";
+
+service HashService {
+  rpc HashStrings(HashStringsRequest) returns (HashStringsResponse);
+}
+
+message HashStringsRequest {
+  repeated bytes str = 1;
+}
+
+message HashStringsResponse {
+  repeated string hashed = 1;
+}

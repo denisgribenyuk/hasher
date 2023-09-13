@@ -1,0 +1,11 @@
+FROM golang:1.20 as builder
+WORKDIR /app
+COPY . /app
+RUN GO111MODULE=auto CGO_ENABLED=0 GOOS=linux GOPROXY=https://proxy.golang.org go build -o app cmd/app/main.go
+
+FROM alpine:latest
+WORKDIR /app
+COPY --from=builder /app/app .
+
+EXPOSE ${HASH_SERVICE_PORT}
+CMD ./app --port ${HASH_SERVICE_PORT} --host '0.0.0.0'
